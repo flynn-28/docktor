@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  docktor:
+    image: alpine:latest
+    container_name: docktor
+    ports:
+      - "9050:9050"
+      - "8080:8080"
+    command: >
+      /bin/sh -c "
+      apk update &&
+      apk add --no-cache tor &&
+      echo 'SocksPort 0.0.0.0:9050
+      \ ControlPort 9051
+      \ HTTPTunnelPort 8080' > /etc/tor/torrc &&
+      tor -f /etc/tor/torrc
+      "
